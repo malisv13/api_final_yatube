@@ -50,6 +50,6 @@ class FollowViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Follow.objects.filter(user=self.request.user)
-    
+
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
