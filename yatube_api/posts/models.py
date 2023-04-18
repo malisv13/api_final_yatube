@@ -4,6 +4,15 @@ from django.db import models
 User = get_user_model()
 
 
+class Group(models.Model):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.title
+
+
 class Post(models.Model):
     text = models.TextField()
     pub_date = models.DateTimeField(
@@ -19,6 +28,10 @@ class Post(models.Model):
         upload_to='posts/',
         null=True,
         blank=True
+    )
+    group = models.ForeignKey(
+        Group, on_delete=models.SET_NULL, blank=True,
+        null=True, related_name='posts'
     )
 
     def __str__(self):
@@ -42,15 +55,6 @@ class Comment(models.Model):
         auto_now_add=True,
         db_index=True
     )
-
-
-class Group(models.Model):
-    title = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True)
-    description = models.TextField()
-
-    def __str__(self):
-        return self.title
 
 
 class Follow(models.Model):
